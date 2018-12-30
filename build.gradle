@@ -12,7 +12,12 @@ buildscript {
 
 apply plugin: 'kotlin'
 
-defaultTasks 'clean', 'compileKotlin'
+defaultTasks 'run'
+
+task run(type: JavaExec) {
+    main ='Main'
+    classpath = sourceSets.main.runtimeClasspath
+}
 
 repositories {
 	jcenter()
