@@ -1,16 +1,19 @@
 buildscript {
 
     ext.kotlin_version = '1.3.10'
+    ext.tomcat_version = '8.0.42'
 
     repositories {
 	    jcenter()
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath   "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version",
+                    "com.bmuschko:gradle-tomcat-plugin:2.5"
     }
 }
 
 apply plugin: 'kotlin'
+apply plugin: 'com.bmuschko.tomcat'
 
 defaultTasks 'run'
 
@@ -25,4 +28,12 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    tomcat  "org.apache.tomcat.embed:tomcat-embed-core:$tomcat_version",
+            "org.apache.tomcat.embed:tomcat-embed-logging-juli:$tomcat_version",
+            "org.apache.tomcat.embed:tomcat-embed-jasper:$tomcat_version"
+}
+
+tomcat {
+    httpProtocol = 'org.apache.coyote.http11.Http11Nio2Protocol'
+    ajpProtocol  = 'org.apache.coyote.ajp.AjpNio2Protocol'
 }
