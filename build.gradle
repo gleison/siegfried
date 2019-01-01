@@ -1,7 +1,8 @@
 buildscript {
 
     ext.kotlin_version = '1.3.10'
-    ext.spring_boot_version = '2.1.0.RELEASE'\
+    ext.spring_boot_version = '2.1.0.RELEASE'
+    ext.node_version = '1.1.0'
 
     repositories {
 	    jcenter()
@@ -9,15 +10,35 @@ buildscript {
     dependencies {
         classpath   "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version",
                     "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version",
-                    "org.springframework.boot:spring-boot-gradle-plugin:$spring_boot_version"
+                    "org.springframework.boot:spring-boot-gradle-plugin:$spring_boot_version",
+                    "com.moowork.gradle:gradle-node-plugin:$node_version"
     }
 }
 
+apply plugin: 'war'
 apply plugin: 'kotlin'
 apply plugin: 'kotlin-spring'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'com.moowork.node'
 
-defaultTasks 'clean', 'bootRun'
+defaultTasks 'build'
+
+// webpack
+task webpack(type: NodeTask, dependsOn: 'npmInstall') {
+    script = project.file('node_modules/.bin/webpack')
+}
+processResources.dependsOn 'webpack'
+
+// war
+bootRun.dependsOn 'bootWar'
+
+// clean node
+task npmClean(type: Delete) {
+    delete 'node_modules'
+}
+
+// clean webpack
+clean.delete << file('src/main/webapp/dist')
 
 repositories {
 	jcenter()

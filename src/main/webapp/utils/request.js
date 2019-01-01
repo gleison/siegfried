@@ -16,18 +16,3 @@ function get(url) {
         req.send();
     });
 }
-
-var application = new Vue({
-    el: '#application',
-    data: {
-        message: 'Hello, Kotlin!'
-    },
-    methods: {
-        sendHello: () => {
-            get('http://localhost:8080/hello?name=Vue').then((response) => {
-                application.message = response;
-            });
-        }
-    }
-});
-
