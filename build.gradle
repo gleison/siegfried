@@ -1,6 +1,6 @@
 buildscript {
 
-    ext.kotlin_version = '1.3.10'
+    ext.kotlin_version = '1.3.41'
     ext.spring_boot_version = '2.1.0.RELEASE'
     ext.node_version = '1.1.0'
 
@@ -32,6 +32,11 @@ processResources.dependsOn 'webpack'
 // war
 bootRun.dependsOn 'bootWar'
 
+// debug
+bootRun {
+    //jvmArgs=['-Xdebug', '-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=*:5005']
+}
+
 // clean node
 task npmClean(type: Delete) {
     delete 'node_modules'
@@ -46,6 +51,8 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
-            "org.springframework.boot:spring-boot-starter-web:$spring_boot_version"
+            "org.springframework.boot:spring-boot-starter-web:$spring_boot_version",
+            "com.squareup.retrofit2:retrofit:2.5.0",
+            "com.squareup.retrofit2:converter-gson:2.5.0"
 }
 

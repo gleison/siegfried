@@ -5,8 +5,7 @@ function get(url) {
         req.onload = function() {
         if (req.status == 200) {
             resolve(req.response);
-        }
-        else {
+        } else {
             reject(Error(req.statusText));
         }
         };

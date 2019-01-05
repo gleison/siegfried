@@ -1,28 +1,34 @@
 <template>
     <div>
-        <input type='text' v-bind:value='message'>
-        <button v-on:click='sendHello'>Send</button>
+        <input type='text' v-model:value='stock'>
+        <input type='text' v-model:value='name'>
+        <input type='text' v-model:value='value'>
+        <button v-on:click='getInfo'>Send</button>
     </div>
 </template>
 
-<script>
+<script type="text/script">
 export default {
     name: "Initial",
     data() {
         return {
-            message: 'Hello, Kotlin!'
+            stock: '',
+            name: '',
+            value: ''
         }
     },
     methods: {
-        sendHello() {
-            get('http://localhost:8080/hello?name=Vue')
+        getInfo() {
+            get('http://localhost:8080/stock?symbol=' + this.stock)
             .then(this.setResponse)
             .catch(function (error) {
                 console.log(error);
             });
         },
         setResponse(response) {
-            this.message = response;
+            var json = JSON.parse(response);
+            this.name = json.info.symbol;
+            this.value = json.info.price;
         }
     }
 };
